@@ -10,7 +10,7 @@ class User(Base):
     username: Mapped[uniq_str_an]
     email: Mapped[uniq_str_an]
     password: Mapped[str]
-    profile_id: Mapped[int | None] = mapped_column(ForeignKey('profiles.id'))
+    # profile_id: Mapped[int | None] = mapped_column(ForeignKey('profiles.id'))
 
     # Связь один-к-одному с Profile
     profile: Mapped["Profile"] = relationship(
@@ -44,6 +44,9 @@ class Profile(Base):
                                                        server_default=text("'UNEMPLOYED'"))
     interests: Mapped[array_or_none_an]
     contacts: Mapped[dict | None] = mapped_column(JSON)
+
+    # Внешний ключ на таблицу users
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), unique=True)
 
     # Обратная связь один-к-одному с User
     user: Mapped["User"] = relationship(
